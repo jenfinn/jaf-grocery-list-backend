@@ -41,8 +41,8 @@ def get_foods():
 
 @app.route("/food", methods=["POST"])
 def add_food():
-    title = request.args["title"]
-    done = request.args["done"].lower() == "true"
+    title = request.json["title"]
+    done = request.json["done"]
 
     new_food = Food(title, done)
     db.session.add(new_food)
@@ -55,8 +55,8 @@ def add_food():
 def update_food(id):
     food = Food.query.get(id)
 
-    food.title = request.args["title"]
-    food.done = request.args["done"].lower() == "true"
+    food.title = request.json["title"]
+    food.done = request.json["done"]
 
     db.session.commit()
     return food_schema.jsonify(food)
@@ -73,5 +73,3 @@ def delete_food(id):
 if __name__ == "__main__":
     app.debug = True
     app.run()
-
-    response
